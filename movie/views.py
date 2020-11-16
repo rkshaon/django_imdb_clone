@@ -14,8 +14,22 @@ def index(request):
         context = {
             'query': query,
             'movie_data': movie_data,
+            'page_number': 1,
         }
         template = loader.get_template('search_result.html')
         return HttpResponse(template.render(context, request))
 
     return render(request, 'index.html')
+
+def pagination(request, query, page_number):
+    url = 'http://www.omdbapi.com/?apikey=ecd537eb&s=' + query + '&page=' + str(page_number)
+    response = requests.get(url)
+    movie_data = response.json()
+    page_number = int(page_number) + 1
+    context = {
+        'query': query,
+        'movie_data': movie_data,
+        'page_number': page_number,
+    }
+    template = loader.get_template('search_result.html')
+    return HttpResponse(template.render(context, request))

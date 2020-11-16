@@ -42,3 +42,13 @@ class Movie(models.Model):
     Metascore = models.CharField(max_length=5, blank=True)
     imdbRating = models.CharField(max_length=5, blank=True)
     imdbVotes = models.CharField(max_length=100, blank=True)
+    imdbID = models.CharField(max_length=100, blank=True)
+    Type = models.CharField(max_length=10, blank=True)
+    DVD = models.CharField(max_length=25, blank=True)
+    BoxOffice = models.CharField(max_length=25, blank=True)
+    Production = models.CharField(max_length=100, blank=True)
+    Website = models.CharField(max_length=150, blank=True)
+    totalSeasons = models.CharField(max_length=3, blank=True)
+
+    def __str__(self):
+        return self.Title
