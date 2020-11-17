@@ -58,26 +58,52 @@
                     <span class="title">Rated</span>
                     <p><b>8 / 10 - very good</b> by <b>100</b> people</p>
                   </li>
-                  <li class="collection-item avatar">
-                    <img src="img/icons/imdb_icon.png" alt="" class="circle">
-                    <span class="title">IMDB Rating</span>
-                    <p><b>9.3 / 10</b></p>
-                  </li>
-                  <li class="collection-item avatar">
-                    <img src="img/icons/meta_icon.png" alt="" class="circle">
-                    <span class="title">Metacritic</span>
-                    <p><b>75 / 100</b></p>
-                  </li>
-                  <li class="collection-item avatar">
-                    <img src="img/icons/rt_icon.png" alt="" class="circle">
-                    <span class="title">Rotten Tomatoes</span>
-                    <p><b>72%</b></p>
-                  </li>
+                  {% if our_db is True %}
+                    {% for movie in movie_data.Ratings.all %}
+                      {% if movie.source == 'Internet Movie Database'%}
+                        <li class="collection-item avatar">
+                          <img src="{% static 'img/icons/imdb_icon.png' %}" alt="" class="circle">
+                          <span class="title">{{ movie.source }}</span>
+                          <p><b>{{ movie.rating }}</b></p>
+                        </li>
+                      {% endif %}
+                      {% if movie.source == 'Metacritic'%}
+                        <li class="collection-item avatar">
+                          <img src="{% static 'img/icons/meta_icon.png' %}" alt="" class="circle">
+                          <span class="title">{{ movie.source }}</span>
+                          <p><b>{{ movie.rating }}</b></p>
+                        </li>
+                      {% endif %}
+                      {% if movie.source == 'Rotten Tomatoes'%}
+                        <li class="collection-item avatar">
+                          <img src="{% static 'img/icons/rt_icon.png' %}" alt="" class="circle">
+                          <span class="title">{{ movie.source }}</span>
+                          <p><b>{{ movie.rating }}</b></p>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  {% else %}
+                    <li class="collection-item avatar">
+                      <img src="{% static 'img/icons/imdb_icon.png' %}" alt="" class="circle">
+                      <span class="title">{{ movie_data.Ratings.0.Source }}</span>
+                      <p><b>{{ movie_data.Ratings.0.Value }}</b></p>
+                    </li>
+                    <li class="collection-item avatar">
+                      <img src="{% static 'img/icons/rt_icon.png' %}" alt="" class="circle">
+                      <span class="title">{{ movie_data.Ratings.1.Source }}</span>
+                      <p><b>{{ movie_data.Ratings.1.Value }}</b></p>
+                    </li>
+                    <li class="collection-item avatar">
+                      <img src="{% static 'img/icons/meta_icon.png' %}" alt="" class="circle">
+                      <span class="title">{{ movie_data.Ratings.2.Source }}</span>
+                      <p><b>{{ movie_data.Ratings.2.Value }}</b></p>
+                    </li>
+                  {% endif %}
                 </ul>
                 <div class="divider"></div>
-                <p>Box Office: <b>$150,440,113</b></p>
-                <p>imdb votes: <b>5,440</b></p>
-                <p>Production: <b>Paramount Pictures</b></p>
+                <p>Box Office: <b>{{movie_data.BoxOffice}}</b></p>
+                <p>imdb votes: <b>{{movie_data.imdbVotes}}</b></p>
+                <p>Production: <b>{{movie_data.Production}}</b></p>
                 <a class="waves-effect waves-light btn"><i class="material-icons left">star</i>Rate</a>
                 <a class="waves-effect waves-light btn"><i class="material-icons left">playlist_add</i>Watchlist</a>
                 <a class="waves-effect waves-light btn"><i class="material-icons left">playlist_add_check</i>Watched</a>
