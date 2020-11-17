@@ -20,7 +20,7 @@ Search result of {{ query }}
         <div class="col s12 m4">
           <div class="card">
             <div class="card-image">
-              <img src="{{ movie.Poster }}" height="">
+              <a href="{% url 'movie-details' movie.imdbID %}"><img src="{{ movie.Poster }}" height=""></a>
             </div>
             <div class="card-content">
               <span class="card-title"><b>{{ movie.Title }}</b></span>
