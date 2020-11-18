@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.utils.text import slugify
+from django.core.paginator import Paginator
 from movie.models import Movie, Genre, Rating
 from actor.models import Actor
 import requests
@@ -136,4 +137,18 @@ def movie_details(request, imdb_id):
     }
 
     template = loader.get_template('movie_details.html')
+    return HttpResponse(template.render(context, request))
+
+def genres(request, genre_slug):
+    genre = get_object_or_404(Genre, slug=genre_slug)
+    movies = Movie.objects.filter(Genre=genre)
+    # Pagination
+    paginator = Paginator(movies, 9)
+    page_number = request.GET.get('page')
+    movie_data = paginator.get_page(page_number)
+    context = {
+        'movie_data': movie_data,
+        'genre': genre
+    }
+    template = loader.get_template('genre.html')
     return HttpResponse(template.render(context, request))

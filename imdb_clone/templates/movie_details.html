@@ -31,10 +31,10 @@
                 {% if our_db is True %}
                 <p>Genre:
                   {% for genre in movie_data.Genre.all %}
-                  <b>
-                  {{ genre }},
-                  </b>
-                {% endfor %}</p>
+                    <b><a href="{{ genre.get_absolute_url }}">{{ genre }}</a>,</b>
+                  {% endfor %}
+                </p>
+
                 {% else %}
                 <p>Genre: <b>{{ movie_data.Genre }}</b></p>
                 {% endif %}
@@ -43,7 +43,7 @@
                 {% if our_db is True %}
                 <p>Actor:
                   {% for actor in movie_data.Actors.all %}
-                  <b>{{ actor }}</b>,
+                  <b><a href="{{ actor.get_absolute_url }}">{{ actor }}</a>,</b>
                   {% endfor %}
                 </p>
                 {% else %}
