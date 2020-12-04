@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row center-align">
+  <form class="col s12" enctype="multipart/form-data" role="form" action="" method="POST">
+    {% csrf_token %}
+    <h3>Edit profile</h3>
+    <div class="row">
+      <div class="file-field input-field col s12">
+        <div class="btn">
+          <span>File</span>
+          {{ form.picture }}
+        </div>
+        <div class="file-path-wrapper">
+          <input type="text" class="file-path validate" name="" value="">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <i class="material-icons prefix">account_circle</i>
+        {{ form.first_name }}
+        <label for="first_name">First Name</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        <i class="material-icons prefix">account_circle</i>
+        {{ form.last_name }}
+        <label for="last_name">Last Name</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">account_circle</i>
+        {{ form.location }}
+        <label for="location">Location</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        {{ form.url }}
+        <label for="url">URL</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s6">
+        {{ form.profile_info }}
+        <label for="profile_info">About</label>
+      </div>
+    </div>
+    {% if form.errors %}
+      <div class="row">
+        <div class="col s12">
+          <span style="color: red; font-weight: bold;">{{ form.errors }}</span>
+        </div>
+      </div>
+    {% endif %}
+    <button type="submit"class="waves-effect waves-light btn" name="action"><i class="material-icons left">person_pin</i>Update</button>
+  </form>
+</div>
+{% endblock %}
