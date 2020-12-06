@@ -38,9 +38,9 @@ class SignUpForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
         self.fields['username'].validators.append(ForbiddenUsers)
-        self.field['username'].validators.append(InvalidUser)
-        self.field['username'].validators.append(UniqueUser)
-        self.field['email'].validators.append(UniqueEmail)
+        self.fields['username'].validators.append(InvalidUser)
+        self.fields['username'].validators.append(UniqueUser)
+        self.fields['email'].validators.append(UniqueEmail)
 
     def clean(self):
         super(SignUpForm, self).clean()

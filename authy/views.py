@@ -22,7 +22,7 @@ def SignUp(request):
     context = {
         'form': form,
     }
-    return render(request, 'registation/signup.html', context)
+    return render(request, 'registration/signup.html', context)
 
 @login_required
 def PasswordChange(request):
@@ -40,10 +40,10 @@ def PasswordChange(request):
     context = {
         'form': form,
     }
-    return render(request, 'registation/change_password.html', context)
+    return render(request, 'registration/change_password.html', context)
 
 def PasswordChangeDone(request):
-    return render(request, 'registation/change_password_done.html')
+    return render(request, 'registration/change_password_done.html')
 
 @login_required
 def EditProfile(request):
