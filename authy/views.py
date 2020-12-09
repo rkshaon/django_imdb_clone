@@ -15,10 +15,11 @@ def SignUp(request):
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             password = form.cleaned_data.get('password')
-            User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password)
+            User.objects.get_object_or_404(username=username, email=email, first_name=first_name, last_name=last_name, password=password)
             return redirect('edit-profile')
     else:
         form = SignUpForm()
+
     context = {
         'form': form,
     }
