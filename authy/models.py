@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
-from movie.models import Movie
 from django.db.models.signals import post_save
 from PIL import Image
 from django.conf import settings
 import os
+
+from django.contrib.auth.models import User, UserManager
+from movie.models import Movie
 
 def user_directory_path(instance, filename):
     profile_pic_name = 'user_{0}/profile.jpg'.format(instance.user.id)
@@ -31,7 +32,7 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
         SIZE = 250, 250
 
-        if SIZE.picture:
+        if self.picture:
             pic = Image.open(self.picture.path)
             pic.thumbnail(SIZE, Image.LANCZOS)
             pic.save(self.picture.path)
@@ -40,11 +41,11 @@ class Profile(models.Model):
         return self.user.username
 
 def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
+	if created:
+		Profile.objects.create(user=instance)
 
 def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+	instance.profile.save()
 
 post_save.connect(create_user_profile, sender=User)
 post_save.connect(save_user_profile, sender=User)

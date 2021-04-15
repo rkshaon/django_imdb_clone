@@ -16,11 +16,11 @@ def InvalidUser(value):
         raise ValidationError('This is invalid user, do not user this characters: @, +, -')
 
 def UniqueEmail(value):
-    if User.objects.filter(email_iexact=value).exists():
+    if User.objects.filter(email__iexact=value).exists():
         raise ValidationError('User with this e-mail already exists.')
 
 def UniqueUser(value):
-    if User.objects.filter(username_iexact=value).exists():
+    if User.objects.filter(username__iexact=value).exists():
         raise ValidationError('User with this username already exists.')
 
 class SignUpForm(forms.ModelForm):

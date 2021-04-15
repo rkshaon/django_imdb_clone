@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
@@ -10,13 +10,16 @@ def SignUp(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            print('form validation portion')
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             first_name = form.cleaned_data.get('first_name')
             last_name = form.cleaned_data.get('last_name')
             password = form.cleaned_data.get('password')
-            User.objects.get_object_or_404(username=username, email=email, first_name=first_name, last_name=last_name, password=password)
-            return redirect('edit-profile')
+            User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password)
+            return redirect('login')
+        else:
+            print('The form is not validated! There is some error!')
     else:
         form = SignUpForm()
 
