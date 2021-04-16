@@ -15,6 +15,13 @@
     <div class="nav-wrapper container">
       <a id="logo-container" href="{% url 'index' %}" class="brand-logo"><img src="{% static 'img/logo/IMDB_Logo_2016.svg' %}" height=30/></a>
       <ul class="right hide-on-med-and-down">
+        {% if user.is_authenticated  %}
+        <li><a href="#">{{ request.user.first_name }} {{ request.user.last_name }}</a></li>
+        <li><a href="{% url 'logout' %}" class="button is-light">Log out</a></li>
+        {% else %}
+        <li><a href="{% url 'signup' %}" class="button is-light">Sign up</a></li>
+        <li><a href="{% url 'login' %}" class="button is-light">Log in</a></li>
+        {% endif %}
         <li><a href="#">Navbar Link</a></li>
       </ul>
       <ul id="nav-mobile" class="sidenav">

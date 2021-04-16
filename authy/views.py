@@ -18,8 +18,6 @@ def SignUp(request):
             password = form.cleaned_data.get('password')
             User.objects.create_user(username=username, email=email, first_name=first_name, last_name=last_name, password=password)
             return redirect('login')
-        else:
-            print('The form is not validated! There is some error!')
     else:
         form = SignUpForm()
 
