@@ -103,10 +103,11 @@
                 <div class="divider"></div>
                 <p>Box Office: <b>{{movie_data.BoxOffice}}</b></p>
                 <p>imdb votes: <b>{{movie_data.imdbVotes}}</b></p>
+                <p>imdb id: <b>{{ movie_data.imdbID }}</b></p>
                 <p>Production: <b>{{movie_data.Production}}</b></p>
                 <a class="waves-effect waves-light btn"><i class="material-icons left">star</i>Rate</a>
-                <a class="waves-effect waves-light btn"><i class="material-icons left">playlist_add</i>Watchlist</a>
-                <a class="waves-effect waves-light btn"><i class="material-icons left">playlist_add_check</i>Watched</a>
+                <a href="{% url 'add_movie_to_watch' movie_data.imdbID %}" class="waves-effect waves-light btn"><i class="material-icons left">playlist_add</i>Watchlist</a>
+                <a href="{% url 'add_movie_to_watched' movie_data.imdbID %}" class="waves-effect waves-light btn"><i class="material-icons left">playlist_add_check</i>Watched</a>
               </div>
             </div>
           </div>
