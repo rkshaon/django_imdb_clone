@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from authy.views import user_profile
+from authy.views import user_profile, review_details
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,5 @@ urlpatterns = [
     path('actor/', include('actor.urls')),
     path('account/', include('authy.urls')),
     path('<username>/', user_profile, name='user_profile'),
+    path('<username>/review/<imdb_id>', review_details, name='review_details'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

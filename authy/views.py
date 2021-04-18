@@ -7,6 +7,7 @@ from django.contrib.auth import update_session_auth_hash
 
 from authy.forms import SignUpForm, ChangePasswordForm, EditProfileForm
 from authy.models import Profile
+from movie.models import Movie, Review
 
 def SignUp(request):
     if request.method == 'POST':
@@ -83,5 +84,19 @@ def user_profile(request, username):
     }
 
     template = loader.get_template('profile.html')
+
+    return HttpResponse(template.render(context, request))
+
+def review_details(request, username, imdb_id):
+    user = get_object_or_404(User, username=username)
+    movie = Movie.objects.get(imdbID=imdb_id)
+    review = Review.objects.get(user=user, movie=movie)
+
+    context = {
+        'review': review,
+        'movie': movie,
+    }
+
+    template = loader.get_template('movie_review.html')
 
     return HttpResponse(template.render(context, request))

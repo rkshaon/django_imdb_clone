@@ -130,7 +130,7 @@
                   <span class="title"><b>{{ review.user.first_name }} {{ review.user.last_name }}</b></span>
                   <p>@{{ review.user.username }}</p>
                   <p>{{ review.date }}</p>
-                  <a href="#!" class="secondary-content"><i class="material-icons">grade</i>{{ review.rate }} / 10</a>
+                  <a href="{% url 'review_details' review.user.username movie_data.imdbID %}" class="secondary-content"><i class="material-icons">grade</i>{{ review.rate }} / 10</a>
                 </li>
                 {% endfor %}
               </ul>
