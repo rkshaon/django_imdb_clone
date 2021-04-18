@@ -1,149 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Parallax Template - Materialize</title>
-  <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-</head>
-<body>
-  <nav class="white" role="navigation">
-    <div class="nav-wrapper container">
-      <a id="logo-container" href="" class="brand-logo"><img src='img/logo/IMDB_Logo_2016.svg' height=30/></a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#">Navbar Link</a></li>
-      </ul>
-      <ul id="nav-mobile" class="sidenav">
-        <li><a href="#">Navbar Link</a></li>
-      </ul>
-      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-    </div>
-  </nav>
-  <div class="" id="index-banner">
-    <div class="section no-pad-bot">
-      <div class="container">
+{% extends 'base.html' %}
+{% load static %}
 
-      </div>
-    </div>
-  </div>
-  <div class="container">
-    <div class="section">
-      <!--   Icon Section   -->
-      <div class="row">
-        <div class="col s12 m12">
-          <div class="card">
-            <div class="card-image">
-              <img src="img/icons/banner.jpg">
-              <img src="img/antje.jpg" id="img-custom-circle-actor">
-              <span style="font-size: 30px;" class="card-title"><b>Jennifer Lopez</b></span>
-            </div>
-            <div class="card-content">
-              <div class="row">
-                <div class="col s12 m4">
-                  <ul class="collection with-header">
-                    <li class="collection-header"><h5>User Information</h5></li>
-                    <li class="collection-item">Location: <b>Dhaka, Bangladesh</b></li>
-                    <li class="collection-item">Link: <a><b>https://facebook.com/rkshaon</b></a></li>
-                    <li class="collection-item">Bio:
-                      <p>
-                        <b>We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</b>
-                      </p>
-                    </li>
-                  </ul>
-                </div>
-                <div class="col s12 m8">
-                  <ul class="collection">
-                    <li class="collection-item avatar">
-                      <i class="material-icons circle blue">local_movies</i>
-                      <span class="title">Movies Watched</span>
-                      <p><b>100</b></p>
-                      <a href="#!" class="secondary-content"><b>Show List</b></a>
-                    </li>
-                    <li class="collection-item avatar">
-                      <i class="material-icons circle green">movie</i>
-                      <span class="title">Series Watched</span>
-                      <p><b>100</b></p>
-                      <a href="#!" class="secondary-content"><b>Show List</b></a>
-                    </li>
-                    <li class="collection-item avatar">
-                      <i class="material-icons circle red">playlist_play</i>
-                      <span class="title">Movies in Watch List</span>
-                      <p><b>100</b></p>
-                      <a href="#!" class="secondary-content"><b>Show List</b></a>
-                    </li>
-                    <li class="collection-item avatar">
-                      <i class="material-icons circle orange">rate_review</i>
-                      <span class="title">Movies Reviewed</span>
-                      <p><b>100</b></p>
-                      <a href="#!" class="secondary-content"><b>Show List</b></a>
-                    </li>
-                  </ul
-                </div>
+{% block content %}
+  <!--   Icon Section   -->
+    <div class="row">
+      <div class="col s12 m12">
+        <div class="card">
+          <div class="card-image">
+            <img src="{% static 'img/icons/banner.jpg' %}">
+            {% if profile.picture %}
+            <img id="img-custom-circle-actor" src="{{ profile.picture.url }}">
+            {% else %}
+            <img id="img-custom-circle-actor" src="{% static 'img/no_avatar.jpg' %}">
+            {% endif %}
+            <span style="font-size: 30px" class="card-title"><b>{{ profile.user.first_name }} {{ profile.user.last_name }}</b></span>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col s12 m4">
+                <ul class="collection with-header">
+                  <li class="collection-header"><h5>User information</h5></li>
+                  <li class="collection-item">Location: <b>{{ profile.location }}</b></li>
+                  <li class="collection-item">Link: <a><b>{{ profile.url }}</b></a></li>
+                  <li class="collection-item">Bio: {{ profile.profile_info }}</li>
+                </ul>
+                {% if user.is_authenticated and user == profile.user %}
+                <a href="{% url 'edit-profile' %}" class="btn">Edit Profile</a>
+                {% endif %}
+              </div>
+              <div class="col s12 m8">
+                <ul class="collection">
+                  <li class="collection-item avatar">
+                    <i class="material-icons circle blue">local_movies</i>
+                    <span class="title">Movies Watched</span>
+                    <p class="center-align"><b>{{ mWatched_count }}</b></p>
+                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                  </li>
+                  <li class="collection-item avatar">
+                    <i class="material-icons circle green">movie</i>
+                    <span class="title">Series Watched</span>
+                    <p class="center-align"><b>{{ sWatched_count }}</b></p>
+                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                  </li>
+                  <li class="collection-item avatar">
+                    <i class="material-icons circle red">playlist_play</i>
+                    <span class="title">Movies in watchlist</span>
+                    <p class="center-align"><b>{{ watch_list_count }}</b></p>
+                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                  </li>
+                  <li class="collection-item avatar">
+                    <i class="material-icons circle orange">rate_review</i>
+                    <span class="title">Movies Reviewed</span>
+                    <p class="center-align"><b>{{ m_reviewd_count }}</b></p>
+                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
-        <h3 class="orange-text">Known for:</h3>
-        <div class="divider"></div>
+      </div>
+    {% if list_title %}
+    <h4 class="orange-text">{{ list_title }}: </h4>
+    <div class="divider"></div>
+    <div class="row">
+      {% if list_title == 'Reviewed' %}
+        {% for review in movie_data %}
         <div class="col s12 m4">
           <div class="card">
             <div class="card-image">
-              <img src="img/2.jpg" alt="">
+              <a href="{% url 'user-review' review.user.username review.movie.imdbID %}"><img src="{{ review.movie.Poster.url }}"></a>
             </div>
             <div class="card-content">
-              <span class="card-title">Intersteller</span>
-              <span class="right"> <i class="material-icons">date_range</i> 2010</span>
-              <p><b>Movie</b></p>
+              <span class="card-title"><b>{{ review.movie.Title }}</b></span>
+              <span class="right"><i class="material-icons">date_range</i>{{ review.movie.Year }}</span>
+              <p><b>{{ review.movie.Type }}</b></p>
             </div>
           </div>
         </div>
-        <div class="col s12 m12 center-align">
-          <a href="#" class="waves-effct waves-light btn"><i class="material-icons left">add</i>Load more</a>
+        {% endfor %}
+      {% else %}
+        {% for movie in movie_data %}
+        <div class="col s12 m4">
+          <div class="card">
+            <div class="card-image">
+              <a href="{% url 'movie-details' movie.imdbID %}"><img src="{{ movie.Poster.url }}"></a>
+            </div>
+            <div class="card-content">
+              <span class="card-title"><b>{{ movie.Title }}</b></span>
+              <span class="right"><i class="material-icons">date_range</i>{{ movie.Year }}</span>
+              <p><b>{{ movie.Type }}</b></p>
+            </div>
+          </div>
         </div>
+        {% endfor %}
+      {% endif %}
       </div>
+      {% if movie_data.has_previous %}
+        <a href="?page={{ movie_data.previous_page_number }}" class="waves-effect waves-light btn"><i class="material-icons left">arrow_back</i>Back</a>
+      {% endif %}
+      {% if movie_data.has_next %}
+      <a href="?page={{ movie_data.next_page_number }}" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Load more</a>
+      {% endif %}
+    {% endif %}
     </div>
   </div>
-  <!-- Footer Section -->
-  <footer class="page-footer teal">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-      Made by <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-      </div>
-    </div>
-  </footer>
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="js/materialize.js"></script>
-  <script src="js/init.js"></script>
-
-  </body>
-</html>
+</div>
+{% endblock %}

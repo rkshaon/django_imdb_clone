@@ -23,6 +23,11 @@
           <span style="color: red; font-weight: bold;">Your username or password did not match.</span>
         </div>
       </div>
+      <div class="row">
+        <div class="col s12">
+          <a href="{% url 'password_reset' %}">Reset password</a>          
+        </div>
+      </div>
     {% endif %}
     <button type="submit" value="login" class="waves-effect waves-light btn" name="button"><i class="material-icons left">send</i>Login</button>
     <input type="hidden" name="next" value="{{ next }}">

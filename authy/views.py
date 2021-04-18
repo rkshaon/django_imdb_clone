@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template import loader
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
@@ -71,3 +73,15 @@ def EditProfile(request):
     }
 
     return render(request, 'edit_profile.html', context)
+
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = Profile.objects.get(user=user)
+
+    context = {
+        'profile': profile,
+    }
+
+    template = loader.get_template('profile.html')
+
+    return HttpResponse(template.render(context, request))
