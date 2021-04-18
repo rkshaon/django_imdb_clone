@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.template import loader
 from django.utils.text import slugify
 from django.core.paginator import Paginator
+from django.db.models import Avg
 import requests
 from django.contrib.auth.models import User
 
@@ -140,7 +141,7 @@ def movie_details(request, imdb_id):
         our_db = False
 
     context = {
-        'movie_data': movie_data,        
+        'movie_data': movie_data,
         'reviews': reviews,
         'reviews_avg': reviews_avg,
         'reviews_count': reviews_count,
@@ -207,5 +208,3 @@ def rate(request, imdb_id):
 
     template = loader.get_template('rate.html')
     return HttpResponse(template.render(context, request))
-
-def

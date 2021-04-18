@@ -120,27 +120,19 @@
           <div class="card">
             <div class="card-content">
               <ul class="collection">
+                {% for review in reviews %}
                 <li class="collection-item avatar">
-                  <img src="img/no_avatar.jpg" alt="" class="circle">
-                  <span class="title"><b>Rezaul Karim Shaon</b></span>
-                  <p>@rkshaon</p>
-                  <p>5 November, 2020</p>
-                  <a href="#!" class="secondary-content"><i class="material-icons">grade</i>10/10 Master Piece</a>
+                  {% if review.user.profile.picture %}
+                  <img src="{{ review.user.profile.picture.url }}" alt="" class="circle">
+                  {% else %}
+                  <img src="{% static 'img/no_avatar.jpg' %}" alt="" class="circle">
+                  {% endif %}
+                  <span class="title"><b>{{ review.user.first_name }} {{ review.user.last_name }}</b></span>
+                  <p>@{{ review.user.username }}</p>
+                  <p>{{ review.date }}</p>
+                  <a href="#!" class="secondary-content"><i class="material-icons">grade</i>{{ review.rate }} / 10</a>
                 </li>
-                <li class="collection-item avatar">
-                  <img src="img/profile.jpg" alt="" class="circle">
-                  <span class="title"><b>Rezaul Karim Shaon</b></span>
-                  <p>@rkshaon</p>
-                  <p>5 November, 2020</p>
-                  <a href="#!" class="secondary-content"><i class="material-icons">grade</i>10/10 Master Piece</a>
-                </li>
-                <li class="collection-item avatar">
-                  <img src="img/no_avatar.jpg" alt="" class="circle">
-                  <span class="title"><b>Rezaul Karim Shaon</b></span>
-                  <p>@rkshaon</p>
-                  <p>5 November, 2020</p>
-                  <a href="#!" class="secondary-content"><i class="material-icons">grade</i>10/10 Master Piece</a>
-                </li>
+                {% endfor %}
               </ul>
             </div>
           </div>
