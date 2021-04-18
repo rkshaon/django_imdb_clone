@@ -9,9 +9,9 @@
           <div class="card-image">
             <img src="{% static 'img/icons/banner.jpg' %}">
             {% if profile.picture %}
-            <img id="img-custom-circle-actor" src="{{ profile.picture.url }}">
+            <img id="img-custom-circle-actor" src="{{ profile.picture.url }}" class="circle responsive-img">
             {% else %}
-            <img id="img-custom-circle-actor" src="{% static 'img/no_avatar.jpg' %}">
+            <img id="img-custom-circle-actor" src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img">
             {% endif %}
             <span style="font-size: 30px" class="card-title"><b>{{ profile.user.first_name }} {{ profile.user.last_name }}</b></span>
           </div>
