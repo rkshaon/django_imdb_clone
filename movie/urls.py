@@ -1,5 +1,5 @@
 from django.urls import path
-from movie.views import index, pagination, movie_details, genres, add_movie_to_watch, add_movie_to_watched
+from movie.views import index, pagination, movie_details, genres, add_movie_to_watch, add_movie_to_watched, rate
 
 urlpatterns = [
     path('', index, name='index'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('<imdb_id>/addmovietowatch', add_movie_to_watch, name='add_movie_to_watch'),
     path('<imdb_id>/addmovietowatched', add_movie_to_watched, name='add_movie_to_watched'),
     path('genre/<slug:genre_slug>', genres, name='genres'),
+    path('<imdb_id>/rate', rate, name='rate_movie'),
 ]

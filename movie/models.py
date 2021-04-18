@@ -1,10 +1,12 @@
 from django.db import models
-from actor.models import Actor
 from django.utils.text import slugify
 import requests
 from io import BytesIO
 from django.core import files
 from django.urls import reverse
+from django.contrib.auth.models import User
+
+from actor.models import Actor
 
 class Genre(models.Model):
     title = models.CharField(max_length=200)
@@ -69,3 +71,29 @@ class Movie(models.Model):
             file_name = self.Poster_url.split("/")[-1]
             self.Poster.save(file_name, files.File(pb), save=False)
         return super().save(*args, **kwargs)
+
+RATE_CHOICES = [
+    (1, '1 - Trash'),
+    (2, '2 - Horrible'),
+	(3, '3 - Terrible'),
+	(4, '4 - Bad'),
+	(5, '5 - OK'),
+	(6, '6 - Watchable'),
+	(7, '7 - Good'),
+	(8, '8 - Very Good'),
+	(9, '9 - Perfect'),
+	(10, '10 - Master Piece'),
+]
+
+class Review(models.Model):
+    """docstring for Review."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(max_length=3000, blank=True)
+    rate = models.PositiveSmallIntegerField(choices=RATE_CHOICES)
+    likes = models.PositiveIntegerField(default=0)
+    unlikes = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.user.username) + " " + str(self.movie.Title)

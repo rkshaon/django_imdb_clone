@@ -7,9 +7,10 @@ from django.core.paginator import Paginator
 import requests
 from django.contrib.auth.models import User
 
-from movie.models import Movie, Genre, Rating
+from movie.models import Movie, Genre, Rating, Review
 from actor.models import Actor
 from authy.models import Profile
+from movie.forms import RateForm
 
 def index(request):
     query = request.GET.get('q')
@@ -45,6 +46,9 @@ def pagination(request, query, page_number):
 def movie_details(request, imdb_id):
     if Movie.objects.filter(imdbID=imdb_id).exists():
         movie_data = Movie.objects.get(imdbID=imdb_id)
+        reviews = Review.objects.filter(movie=movie_data)
+        reviews_avg = reviews.aggregate(Avg('rate'))
+        reviews_count = reviews.count()
         our_db = True
     else:
         url = 'http://www.omdbapi.com/?apikey=ecd537eb&i=' + imdb_id
@@ -136,7 +140,10 @@ def movie_details(request, imdb_id):
         our_db = False
 
     context = {
-        'movie_data': movie_data,
+        'movie_data': movie_data,        
+        'reviews': reviews,
+        'reviews_avg': reviews_avg,
+        'reviews_count': reviews_count,
         'our_db': our_db,
     }
 
@@ -177,3 +184,28 @@ def add_movie_to_watched(request, imdb_id):
     profile.watched.add(movie)
 
     return HttpResponseRedirect(reverse('movie-details', args=[imdb_id]))
+
+def rate(request, imdb_id):
+    movie = Movie.objects.get(imdbID=imdb_id)
+    user = request.user
+
+    if request.method == 'POST':
+        form = RateForm(request.POST)
+        if form.is_valid():
+            rate = form.save(commit=False)
+            rate.user = user
+            rate.movie = movie
+            rate.save()
+            return HttpResponseRedirect(reverse('movie-details', args=[imdb_id]))
+    else:
+        form = RateForm()
+
+    context = {
+        'form': form,
+        'movie': movie,
+    }
+
+    template = loader.get_template('rate.html')
+    return HttpResponse(template.render(context, request))
+
+def
