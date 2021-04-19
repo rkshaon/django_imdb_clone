@@ -34,7 +34,6 @@
                     <b><a href="{{ genre.get_absolute_url }}">{{ genre }}</a>,</b>
                   {% endfor %}
                 </p>
-
                 {% else %}
                 <p>Genre: <b>{{ movie_data.Genre }}</b></p>
                 {% endif %}
@@ -56,7 +55,7 @@
                 <ul class="collection">
                   <li class="collection-item avatar">
                     <span class="title">Rated</span>
-                    <p><b>8 / 10 - very good</b> by <b>100</b> people</p>
+                    <p><b>{{ reviews_avg.rate__avg }}</b> by <b>{{ reviews_count }}</b> people</p>
                   </li>
                   {% if our_db is True %}
                     {% for movie in movie_data.Ratings.all %}

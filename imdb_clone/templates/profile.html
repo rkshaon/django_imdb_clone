@@ -25,7 +25,10 @@
                   <li class="collection-item">Bio: {{ profile.profile_info }}</li>
                 </ul>
                 {% if user.is_authenticated and user == profile.user %}
-                <a href="{% url 'edit-profile' %}" class="btn">Edit Profile</a>
+                <ul class="collection with-header">
+                  <li class="collection-item"><a href="{% url 'edit-profile' %}" class="btn">Edit Profile</a></li>
+                  <li class="collection-item"><a href="{% url 'change-password' %}" class="btn">Change password</a></li>
+                </ul>                
                 {% endif %}
               </div>
               <div class="col s12 m8">
