@@ -97,7 +97,7 @@ def review_details(request, username, imdb_id):
     review = Review.objects.get(user=user, movie=movie)
 
     # comment
-    comments = Comment.objects.filter(review=review).order_by('date')
+    comments = Comment.objects.filter(review=review).order_by('-date')
     print(comments)
     # print("hello")
 
@@ -115,7 +115,7 @@ def review_details(request, username, imdb_id):
     context = {
         'review': review,
         'movie': movie,
-        'comments:': comments,
+        'comments': comments,
         'form': form,
     }
 
