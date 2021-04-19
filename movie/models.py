@@ -97,3 +97,12 @@ class Review(models.Model):
 
     def __str__(self):
         return str(self.user.username) + " " + str(self.movie.Title)
+
+class Likes(models.Model):
+    """docstring for Likes."""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
+    type_like = models.PositiveSmallIntegerField()
+    review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='review_like')
+
+    def __str__(self):
+        return self.user.username

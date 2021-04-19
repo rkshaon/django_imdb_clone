@@ -9,7 +9,7 @@ from django.contrib.auth import update_session_auth_hash
 from authy.forms import SignUpForm, ChangePasswordForm, EditProfileForm
 from comment.forms import CommentForm
 from authy.models import Profile
-from movie.models import Movie, Review
+from movie.models import Movie, Review, Likes
 from comment.models import Comment
 
 def SignUp(request):
@@ -122,3 +122,24 @@ def review_details(request, username, imdb_id):
     template = loader.get_template('movie_review.html')
 
     return HttpResponse(template.render(context, request))
+
+def unlike(request, username, imdb_id):
+    user_liking = request.user
+    user_review = get_object_or_404(User, username=username)
+    movie = Movie.objects.get(imdbID=imdb_id)
+    review = Review.objects.get(user=user_review, movie=movie)
+    current_likes = review.likes
+
+    liked = Likes.objects.filter(user=user_liking, review=review, type_like=2).count()
+
+    if not liked:
+        like = Likes.objects.create(user=user_liking, review=review, type_like=2)
+        current_likes = current_likes + 1
+    else:
+        Likes.objects.filter(user=user_liking, review=review, type_like=2).delete()
+        current_likes = current_likes - 1
+
+    review.likes = current_likes
+    review.save()
+
+    return HttpResponseRedirect(reverse('review_details', args=[username, imdb_id]))
