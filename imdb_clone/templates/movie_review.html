@@ -54,8 +54,8 @@
         {{ review.text }}
       </div>
       <div class="card-action">
-        <a href="#"><i class="material-icons">thumb_up</i>{{ review.likes }}</a>
-        <a href="#"><i class="material-icons">thumb_down</i>{{ review.unlikes }}</a>
+        <a href="{% url 'review_like' review.user.username review.movie.imdbID %}"><i class="material-icons">thumb_up</i>{{ review.likes }}</a>
+        <a href="{% url 'review_unlike' review.user.username review.movie.imdbID %}"><i class="material-icons">thumb_down</i>{{ review.unlikes }}</a>
       </div>
     </div>
   </div>

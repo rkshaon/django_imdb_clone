@@ -123,23 +123,45 @@ def review_details(request, username, imdb_id):
 
     return HttpResponse(template.render(context, request))
 
+def like(request, username, imdb_id):
+	user_liking = request.user
+	user_review = get_object_or_404(User, username=username)
+	movie = Movie.objects.get(imdbID=imdb_id)
+	review = Review.objects.get(user=user_review, movie=movie)
+	current_likes = review.likes
+
+	liked = Likes.objects.filter(user=user_liking, review=review, type_like=2).count()
+
+	if not liked:
+		like = Likes.objects.create(user=user_liking, review=review, type_like=2)
+		current_likes = current_likes + 1
+
+	else:
+		Likes.objects.filter(user=user_liking, review=review, type_like=2).delete()
+		current_likes = current_likes - 1
+
+	review.likes = current_likes
+	review.save()
+
+	return HttpResponseRedirect(reverse('review_details', args=[username, imdb_id]))
+
 def unlike(request, username, imdb_id):
-    user_liking = request.user
+    user_unliking = request.user
     user_review = get_object_or_404(User, username=username)
     movie = Movie.objects.get(imdbID=imdb_id)
     review = Review.objects.get(user=user_review, movie=movie)
-    current_likes = review.likes
+    current_unlikes = review.unlikes
 
-    liked = Likes.objects.filter(user=user_liking, review=review, type_like=2).count()
+    unliked = Likes.objects.filter(user=user_unliking, review=review, type_like=1).count()
 
-    if not liked:
-        like = Likes.objects.create(user=user_liking, review=review, type_like=2)
-        current_likes = current_likes + 1
+    if not unliked:
+        unlike = Likes.objects.create(user=user_unliking, review=review, type_like=2)
+        current_unlikes = current_unlikes + 1
     else:
-        Likes.objects.filter(user=user_liking, review=review, type_like=2).delete()
-        current_likes = current_likes - 1
+        Likes.objects.filter(user=user_unliking, review=review, type_like=2).delete()
+        current_unlikes = current_unlikes + 1
 
-    review.likes = current_likes
+    review.unlikes = current_unlikes
     review.save()
 
     return HttpResponseRedirect(reverse('review_details', args=[username, imdb_id]))
