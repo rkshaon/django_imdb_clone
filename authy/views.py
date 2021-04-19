@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
 
 from authy.forms import SignUpForm, ChangePasswordForm, EditProfileForm
+from comment.forms import CommentForm
 from authy.models import Profile
 from movie.models import Movie, Review
+from comment.models import Comment
 
 def SignUp(request):
     if request.method == 'POST':
@@ -88,13 +91,32 @@ def user_profile(request, username):
     return HttpResponse(template.render(context, request))
 
 def review_details(request, username, imdb_id):
+    user_comment = request.user
     user = get_object_or_404(User, username=username)
     movie = Movie.objects.get(imdbID=imdb_id)
     review = Review.objects.get(user=user, movie=movie)
 
+    # comment
+    comments = Comment.objects.filter(review=review).order_by('date')
+    print(comments)
+    # print("hello")
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.review = review
+            comment.user = user_comment
+            comment.save()
+            return HttpResponseRedirect(reverse('review_details', args=[username, imdb_id]))
+    else:
+        form = CommentForm()
+
     context = {
         'review': review,
         'movie': movie,
+        'comments:': comments,
+        'form': form,
     }
 
     template = loader.get_template('movie_review.html')
