@@ -51,6 +51,15 @@ def movie_details(request, imdb_id):
         reviews_avg = reviews.aggregate(Avg('rate'))
         reviews_count = reviews.count()
         our_db = True
+
+        context = {
+            'movie_data': movie_data,
+            'reviews': reviews,
+            'reviews_avg': reviews_avg,
+            'reviews_count': reviews_count,
+            'our_db': our_db,
+        }
+
     else:
         url = 'http://www.omdbapi.com/?apikey=ecd537eb&i=' + imdb_id
         response = requests.get(url)
@@ -140,13 +149,10 @@ def movie_details(request, imdb_id):
         m.save()
         our_db = False
 
-    context = {
-        'movie_data': movie_data,
-        'reviews': reviews,
-        'reviews_avg': reviews_avg,
-        'reviews_count': reviews_count,
-        'our_db': our_db,
-    }
+        context = {
+            'movie_data': movie_data,
+            'our_db': our_db,
+        }
 
     template = loader.get_template('movie_details.html')
     return HttpResponse(template.render(context, request))

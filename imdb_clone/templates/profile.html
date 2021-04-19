@@ -34,25 +34,25 @@
                     <i class="material-icons circle blue">local_movies</i>
                     <span class="title">Movies Watched</span>
                     <p class="center-align"><b>{{ mWatched_count }}</b></p>
-                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                    <a href="{% url 'user_watched_movies' profile.user.username %}" class="secondary-content"><b>Show list</b></a>
                   </li>
                   <li class="collection-item avatar">
                     <i class="material-icons circle green">movie</i>
                     <span class="title">Series Watched</span>
                     <p class="center-align"><b>{{ sWatched_count }}</b></p>
-                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                    <a href="{% url 'user_watched_series' profile.user.username %}" class="secondary-content"><b>Show list</b></a>
                   </li>
                   <li class="collection-item avatar">
                     <i class="material-icons circle red">playlist_play</i>
                     <span class="title">Movies in watchlist</span>
                     <p class="center-align"><b>{{ watch_list_count }}</b></p>
-                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                    <a href="{% url 'user_watch_list' profile.user.username %}" class="secondary-content"><b>Show list</b></a>
                   </li>
                   <li class="collection-item avatar">
                     <i class="material-icons circle orange">rate_review</i>
                     <span class="title">Movies Reviewed</span>
                     <p class="center-align"><b>{{ m_reviewd_count }}</b></p>
-                    <a href="#" class="secondary-content"><b>Show list</b></a>
+                    <a href="{% url 'user_review_list' profile.user.username %}" class="secondary-content"><b>Show list</b></a>
                   </li>
                 </ul>
               </div>
@@ -69,7 +69,7 @@
         <div class="col s12 m4">
           <div class="card">
             <div class="card-image">
-              <a href="{% url 'user-review' review.user.username review.movie.imdbID %}"><img src="{{ review.movie.Poster.url }}"></a>
+              <a href="{% url 'review_details' review.user.username review.movie.imdbID %}"><img src="{{ review.movie.Poster.url }}"></a>
             </div>
             <div class="card-content">
               <span class="card-title"><b>{{ review.movie.Title }}</b></span>
@@ -84,7 +84,7 @@
         <div class="col s12 m4">
           <div class="card">
             <div class="card-image">
-              <a href="{% url 'movie-details' movie.imdbID %}"><img src="{{ movie.Poster.url }}"></a>
+              <a href="#"><img src="{{ movie.Poster.url }}"></a>
             </div>
             <div class="card-content">
               <span class="card-title"><b>{{ movie.Title }}</b></span>
